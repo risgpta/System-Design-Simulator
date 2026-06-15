@@ -2,7 +2,7 @@
 
 An interactive, browser-based simulator for learning distributed systems architecture. Build system topologies visually, watch real-time traffic flow as animated particles, and observe how design choices affect latency, throughput, and error rates.
 
-**Live Demo:** https://risgpta.github.io/Interactive-System-Design/
+**Live Demo:** https://risgpta.github.io/System-Design-Simulator/
 
 ---
 
