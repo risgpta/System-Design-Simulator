@@ -205,8 +205,8 @@ export default function NodeCard({ node, metrics, params, topology }: NodeCardPr
 
   return (
     <div
-      className="rounded-lg border backdrop-blur-md p-2 transition-all duration-300 select-none relative overflow-hidden"
-      style={{ borderColor, background: bg, boxShadow: shadow, minWidth: "145px" }}
+      className="rounded-lg border backdrop-blur-md p-1.5 md:p-2 transition-all duration-300 select-none relative overflow-hidden"
+      style={{ borderColor, background: bg, boxShadow: shadow, minWidth: "120px" }}
       data-testid={`node-card-${node.type}`}
     >
       {/* Crashed overlay */}

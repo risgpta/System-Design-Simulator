@@ -53,8 +53,8 @@ export default function ScenarioBar({
       {/* Spacer */}
       <div className="flex-1" />
 
-      {/* Particle density legend */}
-      <div className="flex items-center gap-2 flex-shrink-0 border-l border-white/10 pl-3">
+      {/* Particle density legend — hidden on mobile */}
+      <div className="hidden md:flex items-center gap-2 flex-shrink-0 border-l border-white/10 pl-3">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-cyan-400" style={{ boxShadow: "0 0 4px #06b6d4" }} />
           <span className="text-[9px] font-mono text-slate-500">Read</span>

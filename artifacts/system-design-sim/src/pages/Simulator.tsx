@@ -7,6 +7,7 @@ import TopBar from "@/components/simulator/TopBar";
 import ScenarioBar from "@/components/simulator/ScenarioBar";
 import NodeGraph from "@/components/simulator/NodeGraph";
 import ControlPanel from "@/components/simulator/ControlPanel";
+import { SlidersHorizontal, X } from "lucide-react";
 
 const defaultScenario = SCENARIOS.find(s => s.id === DEFAULT_SCENARIO_ID)!;
 
@@ -21,6 +22,7 @@ const DEFAULT_PARAMS: SimulationParams = {
 export default function Simulator() {
   const [params, setParams] = useState<SimulationParams>(DEFAULT_PARAMS);
   const [topology, setTopology] = useState<SystemTopology>(defaultScenario.topology);
+  const [showMobilePanel, setShowMobilePanel] = useState(false);
 
   const metrics = useSimulation(params, topology);
 
@@ -78,6 +80,16 @@ export default function Simulator() {
     setTopology(prev => ({ ...prev, capMode: mode }));
   }, []);
 
+  const controlPanelProps = {
+    params, topology, metrics,
+    onParamsChange: setParams,
+    onAddNode: handleAddNode,
+    onRemoveNode: handleRemoveNode,
+    onToggleCrash: handleToggleCrash,
+    onLoadScenario: handleLoadScenario,
+    onSetCapMode: handleSetCapMode,
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden" data-testid="simulator-root">
       <TopBar metrics={metrics} />
@@ -86,25 +98,50 @@ export default function Simulator() {
         onLoadScenario={handleLoadScenario}
         totalRPS={params.totalRPS}
       />
-      <div className="flex flex-1 overflow-hidden">
+
+      {/* Main area: graph + desktop control panel */}
+      <div className="flex flex-1 overflow-hidden min-h-0">
         <NodeGraph
           topology={topology}
           metrics={metrics}
           params={params}
           onToggleCrash={handleToggleCrash}
         />
-        <ControlPanel
-          params={params}
-          topology={topology}
-          metrics={metrics}
-          onParamsChange={setParams}
-          onAddNode={handleAddNode}
-          onRemoveNode={handleRemoveNode}
-          onToggleCrash={handleToggleCrash}
-          onLoadScenario={handleLoadScenario}
-          onSetCapMode={handleSetCapMode}
-        />
+        {/* Desktop only */}
+        <div className="hidden md:flex">
+          <ControlPanel {...controlPanelProps} />
+        </div>
       </div>
+
+      {/* Mobile: floating Controls button */}
+      <button
+        onClick={() => setShowMobilePanel(true)}
+        className="md:hidden fixed bottom-10 right-4 z-40 flex items-center gap-2 px-4 py-2.5 rounded-full bg-cyan-500 text-black text-xs font-bold shadow-lg shadow-cyan-500/30"
+        aria-label="Open controls"
+      >
+        <SlidersHorizontal className="w-4 h-4" />
+        Controls
+      </button>
+
+      {/* Mobile: full-screen control panel overlay */}
+      {showMobilePanel && (
+        <div className="md:hidden fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-sm">
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 flex-shrink-0">
+            <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest">Controls</span>
+            <button
+              onClick={() => setShowMobilePanel(false)}
+              className="w-7 h-7 flex items-center justify-center rounded-full border border-white/10 text-slate-400 hover:text-white"
+              aria-label="Close controls"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <ControlPanel {...controlPanelProps} />
+          </div>
+        </div>
+      )}
+
       <footer className="shrink-0 flex items-center justify-center py-1.5 text-xs text-muted-foreground border-t border-border/40 bg-background">
         Made by AI &amp;&nbsp;
         <a
