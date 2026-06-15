@@ -1,0 +1,1 @@
+- [System Design Sim Architecture](system-design-sim.md) — topology-driven simulator with dynamic graph, 6 scenarios, CAP toggle, 4 tabs
