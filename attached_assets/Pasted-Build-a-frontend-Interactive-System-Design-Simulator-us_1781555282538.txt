@@ -1,0 +1,27 @@
+Build a frontend Interactive System Design Simulator using React, TailwindCSS, and Lucide Icons (or canvas/SVG for data flow animations).
+
+1. VISUAL LAYOUT
+- Top Bar: System health metrics (Global Throughput, Average Latency, Success Rate %, Error Rate %).
+- Main Workspace: A vertical or left-to-right node graph showing the following infrastructure blocks:
+  * Clients -> Reverse Proxy/Load Balancer -> API Gateway -> Cache Layer (Redis) AND Message Queue (Kafka) -> Database (DynamoDB).
+- Right/Bottom Panel: Control knobs to change variables in real-time.
+
+2. CONTROLS (State Inputs)
+- Traffic Volume: Slider from 100 to 50,000 requests per second (RPS).
+- Read/Write Ratio: Slider/toggle determining percentage split (e.g., 90% Read / 10% Write).
+- Cache Capacity & Policies: Slider for Hit Rate (0% to 100%).
+- Database Constraints: Slider for Max Concurrent Connections (Pool size) and a toggle for "Enable Row-Level Locking" vs "Table-Level Locking".
+
+3. SIMULATION BEHAVIOR & ANIMATION
+- Render visual "particles" or pulses flowing along lines between nodes. Speed of particles should correlate with latency; density should correlate with RPS.
+- If Read requests hit the cache, animate them returning immediately from Cache to Proxy.
+- If Cache misses, animate the traffic passing through Cache down to the Database.
+- Write requests must flow to the Message Queue, which drains into the Database at a fixed ingestion rate.
+- Dynamic Bottlenecks: If Database concurrent requests exceed the pool size, visually highlight the Database node as "Stalled/Locked", slow down the animation pulses, increase the Latency counter, and generate error particles (red pulses) for dropped requests.
+
+4. METRICS & GRAPHS
+- Each component node must display local stats inside its bounding box:
+  * Load Balancer: Active Connections, RPS.
+  * Cache: Hit/Miss ratio, memory pressure indicator.
+  * Queue: Ingestion rate vs consumption rate, Current Depth (backlog).
+  * Database: Active Locks, IOPS, Queue wait time.
