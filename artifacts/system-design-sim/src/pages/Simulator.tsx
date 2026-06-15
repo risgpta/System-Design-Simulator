@@ -106,7 +106,7 @@ export default function Simulator() {
         />
       </div>
       <footer className="shrink-0 flex items-center justify-center py-1.5 text-xs text-muted-foreground border-t border-border/40 bg-background">
-        Made by&nbsp;
+        Made by AI &amp;&nbsp;
         <a
           href="https://www.linkedin.com/in/risgpta/"
           target="_blank"
